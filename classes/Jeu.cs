@@ -41,7 +41,7 @@ namespace MOTS_GLISSES2._0
             Console.Clear();
             while (DateTime.Now - startMenu < TimeSpan.FromSeconds(5))
             {
-                Console.SetCursorPosition(5, 5);
+                Console.SetCursorPosition(32, 5);
                 Console.Write("La partie va commencer dans ");
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 TimeSpan tempsRestant = TimeSpan.FromSeconds(5) - (DateTime.Now - startMenu);
@@ -76,7 +76,7 @@ namespace MOTS_GLISSES2._0
 
                 while (DateTime.Now - début < durée)  //une minute en millisecondes
                 {
-
+                    
                     mot = Console.ReadLine().Trim();
 
 

@@ -159,13 +159,13 @@ namespace MOTS_GLISSES2._0
                     }
                 }
                 str += "\n";
-                for (int k = 0; k < plateauJeu.GetLength(0); k++)
+                for (int k = 0; k < plateauJeu.GetLength(1); k++)
                 {
                     if (i < plateauJeu.GetLength(0) - 1)
-                        str += "----";
+                        str += "---";
                 }
                 if (i < plateauJeu.GetLength(0) - 1)
-                    str += "--";
+                    str += "------";
                 str += "\n";
             }
             return str;
