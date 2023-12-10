@@ -33,14 +33,16 @@ namespace MOTS_GLISSES2._0
             bool fin = false;
             string choix = null;
 
-            Console.SetCursorPosition(5, 21);
+            
 
             do
             {
+                Console.Clear();
+                Console.SetCursorPosition(5, 6);
                 Console.WriteLine("Tapez le nom du mode de jeu : 'fichier' ; 'aléatoire' ou tapez 'Sortir' pour quitter");
                 while (choix != "fichier" && choix != "aléatoire" && choix != "sortir")
                 {
-                    Console.SetCursorPosition(5, 23);
+                    Console.SetCursorPosition(5, 8);
                     choix = Console.ReadLine().Trim();
                 }
 
