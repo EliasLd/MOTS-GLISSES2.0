@@ -42,11 +42,11 @@ namespace MOTS_GLISSES2._0
 
             Console.Clear();
             Console.SetCursorPosition(5, 5);
-            Console.WriteLine("Une partie dure 1 ou 2 minutes, tapez le numéro correspondant à votre choix");
+            Console.WriteLine("Une partie dure 1, 2 ou 3 minutes, tapez le numéro correspondant à votre choix");
             int dureePartie = 0;
             Console.SetCursorPosition(5, 7);
             dureePartie = Convert.ToInt32(Console.ReadLine());
-            while (dureePartie != 1 && dureePartie != 2)
+            while (dureePartie != 1 && dureePartie != 2 && dureePartie != 3)
             {
                 Console.SetCursorPosition(5, 3);
                 Console.ForegroundColor = ConsoleColor.Red;
