@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.Win32.SafeHandles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +38,44 @@ namespace MOTS_GLISSES2._0
 
         public void Partie()
         {
+            // --------------- CHOIX DUREE D'UNE PARTIE ET DES MANCHES --------------- //
+
+            Console.Clear();
+            Console.SetCursorPosition(5, 5);
+            Console.WriteLine("Une partie dure 1 ou 2 minutes, tapez le numéro correspondant à votre choix");
+            int dureePartie = 0;
+            Console.SetCursorPosition(5, 7);
+            dureePartie = Convert.ToInt32(Console.ReadLine());
+            while (dureePartie != 1 && dureePartie != 2)
+            {
+                Console.SetCursorPosition(5, 3);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("INVALIDE");
+                Console.ResetColor();
+                Console.SetCursorPosition(5, 7);
+                dureePartie = Convert.ToInt32(Console.ReadLine());
+            } 
+            Console.Clear();
+
+            Console.SetCursorPosition(5, 5);
+            Console.WriteLine("Une manche dure 10, 15 ou 20 secondes, tapez le numéro correspondant à votre choix");
+            int dureeManche = 0;
+            Console.SetCursorPosition(5, 7);
+            dureeManche = Convert.ToInt32(Console.ReadLine());
+            while (dureeManche != 10 && dureeManche != 15 && dureeManche != 20)
+            {
+                Console.SetCursorPosition(5, 3);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("INVALIDE");
+                Console.ResetColor();
+                Console.SetCursorPosition(5, 7);
+                dureeManche = Convert.ToInt32(Console.ReadLine());
+            }
+
+            // --------------- -------------------------------------- --------------- //
+
+            // ------- AFFICHAGE DU TEMPS RESTANT AVNT LE D2BUT DE LA PARTIE -------- //
+
             DateTime startMenu = DateTime.Now;
             Console.Clear();
             while (DateTime.Now - startMenu < TimeSpan.FromSeconds(3))
@@ -50,11 +89,13 @@ namespace MOTS_GLISSES2._0
                 Console.Write(" secondes ! ");
             }
 
+            // --------------- -------------------------------------- --------------- //
 
             bool win = false;
             int i = 0;
-            DateTime débutPartie = DateTime.Now;
-            TimeSpan duréeGlobale = TimeSpan.FromSeconds(15);   //test pour une partie qui dure 15 secondes en tout
+
+            DateTime débutPartie = DateTime.Now;                      
+            TimeSpan duréeGlobale = TimeSpan.FromMinutes(dureePartie);   //définition de la durée d'une partie 
 
             while (!win && DateTime.Now - débutPartie < duréeGlobale)
             {
@@ -68,13 +109,13 @@ namespace MOTS_GLISSES2._0
                 Console.WriteLine("entrez un mot " + this.joueurs[i].Nom);
 
                 DateTime début = DateTime.Now;
-                TimeSpan durée = TimeSpan.FromSeconds(5);           //test pour le tour d'un joueur qui dure 5 secondes
+                TimeSpan durée = TimeSpan.FromSeconds(dureeManche);           //définition de la durée d'une manche
 
                 string mot = null;
 
 
 
-                while (DateTime.Now - début < durée)  //une minute en millisecondes
+                while (DateTime.Now - début < durée)  
                 {
                     
                     mot = Console.ReadLine().Trim();
@@ -114,7 +155,7 @@ namespace MOTS_GLISSES2._0
 
                     System.Threading.Thread.Sleep(100);
 
-                    if ((DateTime.Now - début) >= durée)    //pour éviter qu'un mot que le joueur ait écris et validé après son temps de jeu ne soit compté
+                    if ((DateTime.Now - début) >= durée)    //On re-vérifie pour éviter qu'un mot que le joueur ait écris et validé après son temps de jeu ne soit compté
                         break;
 
                 }
@@ -129,9 +170,9 @@ namespace MOTS_GLISSES2._0
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.SetCursorPosition(20, 5);
             if (this.joueurs[0].Score > this.joueurs[1].Score)
-                Console.WriteLine("Félicitations " + this.joueurs[0].Nom + " tu remportes la partie avec " + this.joueurs[0].Score + " points !");
+                Console.WriteLine("Félicitations " + this.joueurs[0].Nom + ", tu remportes la partie avec " + this.joueurs[0].Score + " points !");
             else if (this.joueurs[0].Score < this.joueurs[1].Score)
-                Console.WriteLine("Félicitations " + this.joueurs[1].Nom + " tu remportes la partie avec " + this.joueurs[1].Score + " points !");
+                Console.WriteLine("Félicitations " + this.joueurs[1].Nom + ", tu remportes la partie avec " + this.joueurs[1].Score + " points !");
             else Console.WriteLine("Vous êtes ex aequo !");
             Console.ResetColor();
             Console.SetCursorPosition(20, 6);
