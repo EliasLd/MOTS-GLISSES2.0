@@ -117,7 +117,7 @@ namespace MOTS_GLISSES2._0
 
                 while (DateTime.Now - début < durée)  
                 {
-                    
+                    Console.SetCursorPosition(0, 19);
                     mot = Console.ReadLine().Trim();
 
                     if (DateTime.Now - début < durée && mot.Length >= 2 && !this.joueurs[i].Contient(mot) 
