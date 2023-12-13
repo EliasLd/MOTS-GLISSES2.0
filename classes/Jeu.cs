@@ -120,9 +120,10 @@ namespace MOTS_GLISSES2._0
                     
                     mot = Console.ReadLine().Trim();
 
-                    if (!this.joueurs[i].Contient(mot) && mot.Length >= 2 && DateTime.Now - début < durée
+                    if (DateTime.Now - début < durée && mot.Length >= 2 && !this.joueurs[i].Contient(mot) 
+                        && this.Dico.RechDichoRecursif(mot, 0, this.Dico.GetDictionnaire.Length - 1)
                         && this.plateauCourant.Recherche_mot(mot, this.plateauCourant.nombreApparitionsLettreSurPremiereLignePlateau(mot[0]))
-                        && this.Dico.RechDichoRecursif(mot, 0, this.Dico.GetDictionnaire.Length - 1) && !string.IsNullOrEmpty(mot))
+                        && !string.IsNullOrEmpty(mot))
                     {
                         this.joueurs[i].Add_Mot(mot);
                         this.joueurs[i].Add_Score(Program.calculScore(mot, this.plateauCourant));
@@ -160,7 +161,7 @@ namespace MOTS_GLISSES2._0
 
                 }
 
-                mot = null;
+                
 
                 i++;
                 if (i == 2)
