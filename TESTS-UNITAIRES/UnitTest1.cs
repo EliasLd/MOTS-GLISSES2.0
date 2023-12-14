@@ -38,5 +38,25 @@ namespace MOTS_GLISSES2._0
             bool result = j.Contient("bienvenue");
             Assert.IsTrue(result);
         }
+
+        [TestMethod]
+
+        public void TestRecherche_Mot()
+        {
+            Plateau plateau = new Plateau();
+            plateau.RemplirTabLettresDepuisFichierLettre("Lettres.txt");
+            plateau.ToRead("Test1.csv");    // Dans ce fichier, le mot maison est valide car le m est à la base
+            string mot = "maison";
+            bool result = plateau.Recherche_mot(mot, plateau.nombreApparitionsLettreSurPremiereLignePlateau(mot[0]));
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        
+        public void TestIsInDirectory()
+        {
+            bool result = Program.IsInDirectory("save.txt");
+            Assert.IsTrue(result);
+        }
     }
 }

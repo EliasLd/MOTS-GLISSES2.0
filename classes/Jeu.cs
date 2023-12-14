@@ -106,6 +106,7 @@ namespace MOTS_GLISSES2._0
                 Console.WriteLine(this.joueurs[1].toString());
                 Console.SetCursorPosition(0, 0);
                 Console.WriteLine(plateauCourant.toString());
+                Console.SetCursorPosition(43, 8);
                 Console.WriteLine("entrez un mot " + this.joueurs[i].Nom);
 
                 DateTime début = DateTime.Now;
@@ -117,7 +118,7 @@ namespace MOTS_GLISSES2._0
 
                 while (DateTime.Now - début < durée)  
                 {
-                    Console.SetCursorPosition(0, 19);
+                    Console.SetCursorPosition(43, 9);
                     mot = Console.ReadLine().Trim();
 
                     if (DateTime.Now - début < durée && mot.Length >= 2 && !this.joueurs[i].Contient(mot) 
@@ -128,19 +129,20 @@ namespace MOTS_GLISSES2._0
                         this.joueurs[i].Add_Mot(mot);
                         this.joueurs[i].Add_Score(Program.calculScore(mot, this.plateauCourant));
 
+                        Console.SetCursorPosition(43, 10);
                         Console.Write("Bravo " + this.joueurs[i].Nom + ", le mot " + mot + " était dans le plateau, tu remportes ");
                         Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.WriteLine(Program.calculScore(mot, this.plateauCourant) + " points ! ");
                         Console.ResetColor();
                         while (DateTime.Now - début < durée)
                         {
-                            Console.SetCursorPosition(0, 21);
+                            Console.SetCursorPosition(0, 25);
                             Console.Write("Il reste ");
                             TimeSpan tempsRestant = durée - (DateTime.Now - début);
                             Console.ForegroundColor = ConsoleColor.Yellow;
                             Console.Write(tempsRestant);
                             Console.ResetColor();
-                            Console.WriteLine(" secondes avant le prochain tour");
+                            Console.Write(" secondes avant le prochain tour");
                         }
                         break;
                     }
