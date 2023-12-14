@@ -97,7 +97,7 @@ namespace MOTS_GLISSES2._0
             DateTime débutPartie = DateTime.Now;                      
             TimeSpan duréeGlobale = TimeSpan.FromMinutes(dureePartie);   //définition de la durée d'une partie 
 
-            while (!win && DateTime.Now - débutPartie < duréeGlobale)
+            while (!win && DateTime.Now - débutPartie < duréeGlobale && !(this.Joueurs[0].Ff && this.joueurs[1].Ff))
             {
                 Console.Clear();
                 Console.SetCursorPosition(39, 3);
@@ -114,53 +114,61 @@ namespace MOTS_GLISSES2._0
 
                 string mot = null;
 
-
-
-                while (DateTime.Now - début < durée)  
+                if (!this.joueurs[i].Ff)
                 {
-                    Console.SetCursorPosition(43, 9);
-                    mot = Console.ReadLine().Trim();
 
-                    if (DateTime.Now - début < durée && mot.Length >= 2 && !this.joueurs[i].Contient(mot) 
-                        && this.Dico.RechDichoRecursif(mot, 0, this.Dico.GetDictionnaire.Length - 1)
-                        && this.plateauCourant.Recherche_mot(mot, this.plateauCourant.nombreApparitionsLettreSurPremiereLignePlateau(mot[0]))
-                        && !string.IsNullOrEmpty(mot))
+                    while (DateTime.Now - début < durée)
                     {
-                        this.joueurs[i].Add_Mot(mot);
-                        this.joueurs[i].Add_Score(Program.calculScore(mot, this.plateauCourant));
+                        Console.SetCursorPosition(43, 9);
+                        mot = Console.ReadLine().Trim();
 
-                        Console.SetCursorPosition(43, 10);
-                        Console.Write("Bravo " + this.joueurs[i].Nom + ", le mot " + mot + " était dans le plateau, tu remportes ");
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine(Program.calculScore(mot, this.plateauCourant) + " points ! ");
-                        Console.ResetColor();
-                        while (DateTime.Now - début < durée)
+                        if (mot == "ff")
                         {
-                            Console.SetCursorPosition(0, 25);
-                            Console.Write("Il reste ");
-                            TimeSpan tempsRestant = durée - (DateTime.Now - début);
-                            Console.ForegroundColor = ConsoleColor.Yellow;
-                            Console.Write(tempsRestant);
-                            Console.ResetColor();
-                            Console.Write(" secondes avant le prochain tour");
+                            this.joueurs[i].Ff = true;
+                            break;
                         }
-                        break;
+
+                        if (DateTime.Now - début < durée && mot.Length >= 2 && !this.joueurs[i].Contient(mot)
+                            && this.Dico.RechDichoRecursif(mot, 0, this.Dico.GetDictionnaire.Length - 1)
+                            && this.plateauCourant.Recherche_mot(mot, this.plateauCourant.nombreApparitionsLettreSurPremiereLignePlateau(mot[0]))
+                            && !string.IsNullOrEmpty(mot))
+                        {
+                            this.joueurs[i].Add_Mot(mot);
+                            this.joueurs[i].Add_Score(Program.calculScore(mot, this.plateauCourant));
+
+                            Console.SetCursorPosition(43, 10);
+                            Console.Write("Bravo " + this.joueurs[i].Nom + ", le mot " + mot + " était dans le plateau, tu remportes ");
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine(Program.calculScore(mot, this.plateauCourant) + " points ! ");
+                            Console.ResetColor();
+                            while (DateTime.Now - début < durée)
+                            {
+                                Console.SetCursorPosition(0, 25);
+                                Console.Write("Il reste ");
+                                TimeSpan tempsRestant = durée - (DateTime.Now - début);
+                                Console.ForegroundColor = ConsoleColor.Yellow;
+                                Console.Write(tempsRestant);
+                                Console.ResetColor();
+                                Console.Write(" secondes avant le prochain tour");
+                            }
+                            break;
+                        }
+                        else
+                        {
+                            Console.SetCursorPosition(39, 0);
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.Write("Le mot est invalide ou ne figure pas dans le dicionnaire, réessayez.");
+                            Console.SetCursorPosition(0, 20);
+                            Console.ResetColor();
+                        }
+
+
+                        System.Threading.Thread.Sleep(100);
+
+                        if ((DateTime.Now - début) >= durée)    //On re-vérifie pour éviter qu'un mot que le joueur ait écris et validé après son temps de jeu ne soit compté
+                            break;
+
                     }
-                    else 
-                    {
-                        Console.SetCursorPosition(39, 0);
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.Write("Le mot est invalide ou ne figure pas dans le dicionnaire, réessayez.");
-                        Console.SetCursorPosition(0, 20);
-                        Console.ResetColor();
-                    }
-                   
-
-                    System.Threading.Thread.Sleep(100);
-
-                    if ((DateTime.Now - début) >= durée)    //On re-vérifie pour éviter qu'un mot que le joueur ait écris et validé après son temps de jeu ne soit compté
-                        break;
-
                 }
 
                 

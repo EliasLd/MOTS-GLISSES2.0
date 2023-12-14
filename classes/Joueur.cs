@@ -12,6 +12,7 @@ namespace MOTS_GLISSES2._0
         private string nom;
         private string motTrouves;
         private int score;
+        private bool ff = false;
 
         public Joueur(string nom, string motTrouves, int score)
         {
@@ -35,6 +36,12 @@ namespace MOTS_GLISSES2._0
         {
             get { return motTrouves; }
             set { motTrouves = value; }
+        }
+
+        public bool Ff
+        {
+            get { return ff; }
+            set { ff = value; } 
         }
 
         public void Add_Mot(string mot)
