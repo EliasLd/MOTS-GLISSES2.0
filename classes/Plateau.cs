@@ -208,39 +208,60 @@ namespace MOTS_GLISSES2._0
             return cpt;
         }
 
+        /// <summary>
+        /// Fonction récursive qui recherche un mot sur le plateau à l'horizontal, la verticale et en diagonale en partant de la base.
+        /// La première partie de la fonction permet de tester récursivement si la première lettre du mot entré est sur la base du plateau.
+        /// Cette première partie dépend du booléen 'premiereLettreSurLaBase' initialisé à false. Si la lettre est trouvée, alors on rappelle la
+        /// fonction récursivement en passant ce booléen à vrai ce qui permet de passer à la seconde partie de la fonction.
+        /// Quand on passe à la seconde partie, il ne s'agit que d'une série de test sur la verticale, la diagonale et l'horizontale. A chaque fois,
+        /// on sauvegarde les coordonnées du mot trouvés dans la matrice 'indexCrush'. Enfin on a une condition d'arrêt qui vérifie si on est arrivé à la fin du mot,
+        /// ce qui signifie que le mot a été entièrement trouvé et qu'on peut appeler Maj_Plateau (expliquée plus loin). Si une lettre n'est pas trouvé lors de la recherche, 
+        /// on retourne directement false et tout est annulé. Par ailleurs, il est possible que la première lettre du mot soit présente plusieurs fois sur la base du plateau 
+        /// et qu'une seule ne mène au mot, c'est pour cela que l'on test aussi si n (le nb d'apparitions de la première lettre sur la base) est supérieur à 1. Dans ce cas, 
+        /// si lors de la recherche on ne trouve pas le mot et que la première lettre apparait plusieurs fois sur la base, alors on rappelle la fonction récursivement pour 
+        /// recommencer tout le processus. De plus comme la lettre précédente est balisée par 'Found', celle-ci ne sera pas reconsidérer puisque l'on teste si 'Found' est False.
+        /// </summary>
+        /// <param name="mot">le mot entré par l'utilisateur</param>
+        /// <param name="n">le nombre d'apparitions de la première lettre sur la base de la matrice</param>
+        /// <param name="index">l'index actuel sur la chaine de caractère qui décrit le mot</param>
+        /// <param name="premiereLettreSurLaBase">booléen qui est false de base mais qui devient true si la première lettre du mot se situe sur la base de la matrice</param>
+        /// <param name="i">indice ligne actuelle</param>
+        /// <param name="j">indice colonne actuelle</param>
+        /// <returns></returns>
         public bool Recherche_mot(string mot, int n, int index = 0, bool premiereLettreSurLaBase = false, int i = 0, int j = 0)
         {
             if (!premiereLettreSurLaBase)
             {
                 i = plateauJeu.GetLength(0) - 1;
-                if (mot[index] == plateauJeu[i, j].Symbole && !plateauJeu[i, j].Found)   //il faudra penser à mettre le mot de l'utilisateur en minuscule avant
+                if (mot[index] == plateauJeu[i, j].Symbole && !plateauJeu[i, j].Found)  //On a trouvé le mot 
                 {
-                    plateauJeu[i, j].Found = true;
-                    this.indexCrush = new int[mot.Length + 1, 2];
-                    indexCrush[index, 0] = i;
-                    indexCrush[index, 1] = j;
-                    return Recherche_mot(mot, n, index + 1, true, i, j);
+                    plateauJeu[i, j].Found = true;                         //On balise ce mot comme Found, cela sert dans le cas où la première lettre du mot apparaît plusieurs
+                                                                           //fois sur la base du plateau. Cela permet de considérer toutes les éventualités. (on le verra par la suite)
+                    this.indexCrush = new int[mot.Length + 1, 2];          //On initialise la matrice des indices des lettres à faire diparaitre avec la longueur du mot
+                    indexCrush[index, 0] = i;                              //Sauvegarde la ligne du premier mot
+                    indexCrush[index, 1] = j;                              //Sauvegarde de la colonne du premier mot
+                    return Recherche_mot(mot, n, index + 1, true, i, j);   //Appel récursif en passant à true pour effectuer la recherche plus loin
                 }
-                else if (j == plateauJeu.GetLength(1) - 1)
+                else if (j == plateauJeu.GetLength(1) - 1)                 //On est arrivé au bout sans trouver la première lettre du mot
                 {
                     return false;
                 }
                 else
                 {
-                    return Recherche_mot(mot, n, index, false, i, j + 1);
+                    return Recherche_mot(mot, n, index, false, i, j + 1);  //La lettre n'a pas encore été trouvé donc on passe à l'index suivant
                 }
             }
             else
             {
-                if (index == mot.Length)     //condition d'arrêt
-                {
+                if (index == mot.Length)                                   //condition d'arrêt
+                { 
                     this.indexCrush[index, 0] = i;
                     this.indexCrush[index, 1] = j;
-                    StateIndicesCrush();              //ce n'est qu'à ce moment là que l'on valide que les lettres vont être crush pour faire tomber les autres
+                    StateIndicesCrush();                                  //ce n'est qu'à ce moment là que l'on valide que les lettres vont être crush pour faire tomber les autres
                     Maj_Plateau();
                     return true;
                 }
-                if (i != 0 && mot[index] == plateauJeu[i - 1, j].Symbole)     //Recherche verticale
+                if (i != 0 && mot[index] == plateauJeu[i - 1, j].Symbole) //Recherche verticale (vers le haut)
                 {
                     this.indexCrush[index, 0] = i;
                     this.indexCrush[index, 1] = j;
@@ -270,23 +291,27 @@ namespace MOTS_GLISSES2._0
                     this.indexCrush[index, 1] = j;
                     return Recherche_mot(mot, n, index + 1, true, i - 1, j + 1);
                 }
-                else if (n > 1)
+                else if (n > 1)                                           //Si le mot n'a pas été trouvé mais que sa première lettre apparaît plusieurs fois sur la base du plateau
+                                                                          //on rappelle la fonction et on recommence la recherche depuis le début.
                     return Recherche_mot(mot, n - 1, 0, false, 0, 0);
                 else
                     return false;
             }
         }
 
+        /// <summary>
+        /// Comme les indices des lettres trouvées ont été sauvegardés, il ne reste plus qu'à parcourir le plateau et la matrice
+        /// des indices sauvegardés et de mettre l'attribut crush des lettres à true puisqu'elles vont être "crush" (cassées pour faire tomber les autres)
+        /// </summary>
         void StateIndicesCrush()
         {
-
             for (int i = 0; i < plateauJeu.GetLength(0); i++)
             {
                 for (int j = 0; j < plateauJeu.GetLength(1); j++)
                 {
                     for (int k = 0; k < this.indexCrush.GetLength(0); k++)
                     {
-                        if (this.indexCrush[k, 0] == i && this.indexCrush[k, 1] == j)
+                        if (this.indexCrush[k, 0] == i && this.indexCrush[k, 1] == j)   //On regarde si les indices correspondent sur la matrice
                         {
                             plateauJeu[i, j].Crush = true;
                         }
@@ -295,7 +320,12 @@ namespace MOTS_GLISSES2._0
             }
         }
 
-
+        /// <summary>
+        /// Tout d'abord cette fonction parcourt le plateau et dès qu'elle trouve une Lettre dont l'attribut "crush" est TRUE, elle la remplace par un espace ' '.
+        /// Puis on parcours le plateau k fois et à chaque fois que la lettre en dessous de la lettre actuel est Crush (crush = true), on inverse la lettre actuelle avec le
+        /// ' '. Comme tout cela se fait dans un while, les espaces ' ' remontent à la manière d'une bulle jusqu'en haut du plateau.
+        /// Remarque : le parcourt du tableau se fait lui même dans une boucle car sinon les espaces ne peuvent pas remonter jusqu'en haut
+        /// </summary>
         public void Maj_Plateau()
         {
             for (int i = 0; i < plateauJeu.GetLength(0); i++)
@@ -308,21 +338,20 @@ namespace MOTS_GLISSES2._0
                     }
                 }
             }
-            for (int k = 0; k < plateauJeu.GetLength(0); k++)
+            for (int k = 0; k < plateauJeu.GetLength(0); k++)   //On parcour chaque ligne 
             {
-
-                for (int i = 0; i < plateauJeu.GetLength(0); i++)
+                for (int i = 0; i < plateauJeu.GetLength(0); i++) //lignes
                 {
-                    for (int j = 0; j < plateauJeu.GetLength(1); j++)
+                    for (int j = 0; j < plateauJeu.GetLength(1); j++)   //colonnes
                     {
                         if (i < plateauJeu.GetLength(0) - 1 && plateauJeu[i + 1, j].Crush)
                         {
-                            while (plateauJeu[i + 1, j].Crush && !plateauJeu[i, j].Crush)
+                            while (plateauJeu[i + 1, j].Crush && !plateauJeu[i, j].Crush)    //Si la lettre en dessous est Crush
                             {
-                                Lettre tmp = plateauJeu[i + 1, j];
-                                plateauJeu[i + 1, j] = plateauJeu[i, j];
-                                plateauJeu[i, j] = tmp;
-                            }
+                                Lettre tmp = plateauJeu[i + 1, j];                           //On inverse la lettre et l'espace 
+                                plateauJeu[i + 1, j] = plateauJeu[i, j];                      
+                                plateauJeu[i, j] = tmp;                                
+                            } 
                         }
 
                     }

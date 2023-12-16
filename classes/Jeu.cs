@@ -51,15 +51,14 @@ namespace MOTS_GLISSES2._0
             Console.WriteLine("Une partie dure 1, 2 ou 3 minutes, tapez le numéro correspondant à votre choix");
             int dureePartie = 0;
             Console.SetCursorPosition(5, 7);
-            dureePartie = Convert.ToInt32(Console.ReadLine());
-            while (dureePartie != 1 && dureePartie != 2 && dureePartie != 3)
+            dureePartie = 0;
+            while (!int.TryParse(Console.ReadLine(), out dureePartie) || (dureePartie != 1 && dureePartie != 2 && dureePartie != 3))
             {
                 Console.SetCursorPosition(5, 3);
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("INVALIDE");
                 Console.ResetColor();
                 Console.SetCursorPosition(5, 7);
-                dureePartie = Convert.ToInt32(Console.ReadLine());
             } 
             Console.Clear();
 
@@ -67,15 +66,14 @@ namespace MOTS_GLISSES2._0
             Console.WriteLine("Une manche dure 10, 15 ou 20 secondes, tapez le numéro correspondant à votre choix");
             int dureeManche = 0;
             Console.SetCursorPosition(5, 7);
-            dureeManche = Convert.ToInt32(Console.ReadLine());
-            while (dureeManche != 10 && dureeManche != 15 && dureeManche != 20)
+            dureeManche = 0;
+            while (!int.TryParse(Console.ReadLine(), out dureeManche) || (dureeManche != 10 && dureeManche != 15 && dureeManche != 20))
             {
                 Console.SetCursorPosition(5, 3);
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("INVALIDE");
                 Console.ResetColor();
                 Console.SetCursorPosition(5, 7);
-                dureeManche = Convert.ToInt32(Console.ReadLine());
             }
 
             // --------------- -------------------------------------- --------------- //
