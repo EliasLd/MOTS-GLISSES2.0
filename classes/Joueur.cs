@@ -46,9 +46,13 @@ namespace MOTS_GLISSES2._0
 
         public void Add_Mot(string mot)
         {
-            this.motTrouves += mot + " ";
+            this.motTrouves += mot + " ";        //On ajoute un espace, ceci a de l'importance pour la fonction Contient
         }
 
+        /// <summary>
+        /// Simple méthode qui retourne une chaine de caractères contenant des informations sur le joueur actuel
+        /// </summary>
+        /// <returns></returns>
         public string toString()
         {
             return (this.nom + " a un score de " + this.score + " et a trouvé les mots suivant : " + this.motTrouves);
@@ -56,9 +60,16 @@ namespace MOTS_GLISSES2._0
 
         public void Add_Score(int val)
         {
-            this.score += val;
+            this.score += val;              //Simple ajout
         }
 
+        /// <summary>
+        /// étant donne que les mots trouvés par l'utilisateur sont stockés par dna sune chaine de caractères et séparés par des espaces, on
+        /// créé un tableau de chaines de caractères dans lequel on résupère chaque mot puis on effectue un simple parcour de tableau avec un 
+        /// test d'égalité à chaque fois
+        /// </summary>
+        /// <param name="mot"></param>
+        /// <returns></returns>
         public bool Contient(string mot)
         {
             string[] tab_mots = this.motTrouves.Split(' ');

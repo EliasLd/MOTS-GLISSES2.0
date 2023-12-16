@@ -22,6 +22,12 @@ namespace MOTS_GLISSES2._0
             this.langue = langue;
         }
 
+        /// <summary>
+        /// Cette fonction permet de d'abord lire tout le dictionnaire et de le stocker dans une chaine de caractère, puis
+        /// on instancie la variable static dictionnaire qui est un tableau de string avec chaque mots. On obtient donc un tableau N chaines de caractères
+        /// avec N = la nombre de mots dans le dictionnaire.
+        /// </summary>
+        /// <param name="filename"></param>
         public void RemplirDico(string filename)
         {
             StreamReader sr = new StreamReader(filename);
@@ -90,6 +96,12 @@ namespace MOTS_GLISSES2._0
             return i + 1;
         }
 
+
+        /// <summary>
+        /// Puisque nous n'avons pas utilisé de SortedList, nous avons une matrice de int dont la première colonne contient le code ASCII des lettres de l'alphabet,
+        /// c'est pour cela qu'on cast k en char à chaque fois. Puis on initialise la deuxième colonne (le nombre de mots commencant par la lettre) à 1 pour éviter 
+        /// toute confusion par la suite.
+        /// /// </summary>
         public void InitMatLettres()
         {
             int k = 97;
@@ -104,6 +116,10 @@ namespace MOTS_GLISSES2._0
             }
         }
 
+        /// <summary>
+        /// Simple fonction qui va parcourir le dictionnaire et la première dimension de la matrice (les lettres) pour savoir quelle est la première lettre
+        /// du i-ème mot du dictionnaire et ajouter 1 à la lettre correspondante dans la matrice.
+        /// </summary>
         public void CompteMotParLettre()
         {
             for (int i = 0; i < dictionnaire.Length; i++)
@@ -120,11 +136,21 @@ namespace MOTS_GLISSES2._0
             }
         }
 
+        /// <summary>
+        /// Il s'agit ici d'une recherche dichotomique très classique. On sépare notre tableau (le dictionnaire) en deux parties puis on regarde si le mot que l'on
+        /// recherche est alphabétiquement plus petit ou plus grand que le mot situé au milieu. Puis on fait un appel récursif du milieu + 1 vers la fin
+        /// ou bien du début au milieu - 1 en fonction du résulatta du test. Si le mot à l'indice milieu est  égal au mot que l'on recherche, on retourne vraie car on
+        /// l'a trouvé. Sinon, on retourne faux.
+        /// </summary>
+        /// <param name="mot">le mot à trouver</param>
+        /// <param name="debut">par défaut 0, le premier indice du tableau (le dictionnaire). Cette indice évolue à chaque appel récursif.</param>
+        /// <param name="fin">par défaut, la taille du tableau (le dictionnaire) - 1, cette variable évolue à chaque appel</param>
+        /// <returns></returns>
         public bool RechDichoRecursif(string mot, int debut, int fin)
         {
             if (debut <= fin)
             {
-                int milieu = (debut + fin) / 2;
+                int milieu = (debut + fin) / 2;   //permet d'obtenir l'indice de l'élément situé au milieu du dictionnaire
                 if (dictionnaire[milieu] == mot.ToUpper())
                     return true;
                 else if (string.Compare(dictionnaire[milieu], mot) > 0)
@@ -134,7 +160,11 @@ namespace MOTS_GLISSES2._0
             }
             return false;
         }
-
+        
+        /// <summary>
+        /// Fonction toString classique qui retourne une chaine de caractère décrivant le dictionnaire.
+        /// </summary>
+        /// <returns></returns>
         public string toString()
         {
             string str = ("Il y a " + dictionnaire.Length + " mots dans notre dictionnaire " + this.langue);

@@ -15,6 +15,9 @@ namespace MOTS_GLISSES2._0
         private bool found = false;
         private bool crush = false;
 
+        //Nous avons utilisé cette classe pour traiter chaque lettre comme un objet à part entière 
+        //Afin de faciliter l'accès à leurs propriétés.
+
         public Lettre(char symbole, int nombreApparitions, int poids, int nombreApparitionsActuel)
         {
             this.symbole = symbole;

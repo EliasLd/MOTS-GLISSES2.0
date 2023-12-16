@@ -118,17 +118,32 @@ namespace MOTS_GLISSES2._0
             return nom;
         }
 
+
+        /// <summary>
+        /// Etant donné que le plateau doit pouvoir être généré depuis un fichier, on donne l'opportunité à l'utilisateur de saisir lui même le nom du fichier
+        /// à partir duquel on va générer le plateau. Pour éviter des crashs, cette fonction retourne un booléen qui témoigne de la présence ou non du fichier 
+        /// demandé dans le même répertoire que l'éxecutable du projet.
+        /// </summary>
+        /// <param name="nomFile"></param>
+        /// <returns></returns>
         public static bool IsInDirectory(string nomFile)
         {
             return File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, nomFile));
         }
 
+        /// <summary>
+        /// Comme son nom l'indique, cette fonction permet de calculer le score obtenu pour n'importe quel mot valide que l'utilisateur a saisit.
+        /// Pour cela, on prend en compte la longueur du mot à laquelle on ajoute le poids de chaque lettre.
+        /// </summary>
+        /// <param name="mot"></param>
+        /// <param name="plateau"></param>
+        /// <returns></returns>
         public static int calculScore(string mot, Plateau plateau)
         {
             int score = 0;
             int longueur = mot.Length;
 
-            for (int j = 0; j < mot.Length; j++)
+            for (int j = 0; j < longueur; j++)
             {
                 for (int i = 0; i < plateau.TableauLettres.Length; i++)
                 {

@@ -28,12 +28,17 @@ namespace MOTS_GLISSES2._0
             get { return tableauLettres; }
         }
 
+        /// <summary>
+        /// Cett fonction lit le fichier contenant les informations relatives à chaque lettres (poids et nombre max d'apparitions) et les
+        /// sauvgarde dans un tableau de type Lettre en créeant une nouvelle instance de Lettre à chaque fois
+        /// </summary>
+        /// <param name="filename"></param>
         public void RemplirTabLettresDepuisFichierLettre(string filename)
         {
             int i = 0;
 
             StreamReader sr = new StreamReader(filename);
-            tableauLettres = new Lettre[26];
+            tableauLettres = new Lettre[26];              //26 lettres dans l'alphabet
             try
             {
                 while (!sr.EndOfStream)
@@ -41,7 +46,7 @@ namespace MOTS_GLISSES2._0
                     string ligne = sr.ReadLine();
                     string[] info = ligne.Split(",");
 
-                    tableauLettres[i] = new Lettre(char.ToLower(char.Parse(info[0])), int.Parse(info[1]), int.Parse(info[2]), 0);
+                    tableauLettres[i] = new Lettre(char.ToLower(char.Parse(info[0])), int.Parse(info[1]), int.Parse(info[2]), 0);  //Création d'une nouvelle Lettre
                     i++;
                 }
             }
@@ -52,6 +57,13 @@ namespace MOTS_GLISSES2._0
             finally { sr.Close(); }
         }
 
+        /// <summary>
+        /// Fonction qui est appelée quand le joueur choisit de générer un plateau aléatoirement. Nous avons choisit un plateau de 8 par 8 pour respecter
+        /// le nombre d'apparitions maximale de chaque lettres. Dans cette fonction, on instancie le plateau de jeu puis on le parcours en tirant un nombre
+        /// aléatoire à chaque fois. Ce nombre correspond à un indice d'une lettre du tableau de lettres (donc compris entre 0 et 25). On veille à ce que 
+        /// le nombre d'apparitions maximale de chaque lettre soit respecté. Le cas échéant, on tire un nouveau nombre aléatoire. Enfin on ajoute la lettre (de type Lettre)
+        /// aux coordonnées correspondantes dans le plateau.
+        /// </summary>
         public void RemplirPlateauDeJeu8par8()
         {
 
@@ -73,6 +85,13 @@ namespace MOTS_GLISSES2._0
 
         }
 
+
+        /// <summary>
+        /// Fonction qui permet de sauvegarder un plateau dans jeu en l'écrivant dans un fichier .txt ou .csv à l'aide d'un StreamWriter. 
+        /// Avant d'écire dans le fichier, le StreamWriter vide le fichier pour éviter des problèmes. Puis on parcours le plateau en écrivant
+        /// la lettre correspondante dans le fichier en ajoutant un ';' entre chaque lettre (car c'est comme ça que l'on différencie les lettres).
+        /// </summary>
+        /// <param name="nomfile"></param>
         public void ToFile(string nomfile)
         {
             RemplirPlateauDeJeu8par8();
@@ -101,6 +120,12 @@ namespace MOTS_GLISSES2._0
             finally { sw.Close(); }
         }
 
+        /// <summary>
+        /// Complémetaire à la fonction ToFile, on utilise un StreamReader pour lire une instance de plateau à partir d'un fichier
+        /// De cette manière, on créer une nouvelle lettre (de type Lettre) que l'on placeaux coordonnées correspondantes dans le plateau.
+        /// </summary>
+        /// <param name="nomfile">Le nom du fichier à lire</param>
+        /// <returns></returns>
         public bool ToRead(string nomfile)
         {
             
@@ -137,14 +162,10 @@ namespace MOTS_GLISSES2._0
 
         }
 
-        public void afficherLettres()
-        {
-            for (int i = 0; i < tableauLettres.Length; i++)
-            {
-                Console.WriteLine(tableauLettres[i].toString());
-            }
-        }
-
+        /// <summary>
+        /// Fonction qui affiche le plateau en le parcourant et en ajoutant des caractères pour l'interfaçage (séparation des lettres)
+        /// </summary>
+        /// <returns></returns>
         public string toString()
         {
             string str = null;
@@ -171,6 +192,11 @@ namespace MOTS_GLISSES2._0
             return str;
         }
 
+        /// <summary>
+        /// Simple fonction qui retourne le nombre d'apparitions d'un lettres sur la base du plateau. Cette fonction sert uniquement pour la fonction Rercherche_mot.
+        /// </summary>
+        /// <param name="c">le caractère dont on veut connaître le nombre d'apparition sur la base de la matrice</param>
+        /// <returns></returns>
         public int nombreApparitionsLettreSurPremiereLignePlateau(char c)
         {
             int cpt = 0;
