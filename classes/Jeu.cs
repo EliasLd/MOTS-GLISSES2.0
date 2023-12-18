@@ -200,6 +200,8 @@ namespace MOTS_GLISSES2._0
             Console.SetCursorPosition(20, 6);
             Console.WriteLine("Appuyez sur ENTRER pour quitter");
             Console.SetCursorPosition(20, 7);
+            joueurs[0].Ff = false;
+            joueurs[1].Ff = false;
             while (!Console.KeyAvailable || Console.ReadKey(true).Key != ConsoleKey.Enter)
             {
                //On attend que l'utilisateur appuie sur entrée sur continuer
